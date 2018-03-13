@@ -1,27 +1,38 @@
-provider "aws" {
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
-  region     = "${var.region}"
+provider "digitalocean" {
+  token = "${var.do_token}"
 }
 
-resource "aws_instance" "chat" {
-  ami           = "ami-1853ac65"
-  instance_type = "t2.micro"
+resource "digitalocean_droplet" "www-1" {
+  image              = "docker"
+  name               = "www-1"
+  region             = "nyc3"
+  size               = "512mb"
+  private_networking = true
+  count = 1
+
+  ssh_keys = [
+    "${var.ssh_fingerprint}",
+  ]
+
+  connection {
+    user        = "root"
+    type        = "ssh"
+    private_key = "${file(var.pvt_key)}"
+    timeout     = "2m"
+  }
 
   provisioner "remote-exec" {
     inline = [
-      "sudo yum update -y",
-      "sudo yum install -y docker",
-      "sudo yum install -y docker",
-      "sudo service docker start",
-      "sudo curl -L https://github.com/docker/compose/releases/download/1.5.1/docker-compose-`uname -s`-`uname -m` > docker-compose",
-      "sudo chown root docker-compose",
-      "sudo mv docker-compose /usr/local/bin",
-      "sudo chmod +x /usr/local/bin/docker-compose"
+      "git clone https://github.com/jlyon1/terraformchat.git",
+      "cd terraformchat",
+      "curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
+      "chmod +x /usr/local/bin/docker-compose",
+      "docker-compose up &",
+
     ]
   }
 
   provisioner "local-exec" {
-    command = "echo ${aws_instance.chat.public_ip} > ip_address.txt"
+    command = "echo ${digitalocean_droplet.www-1.ipv4_address} > ip_address.txt"
   }
 }

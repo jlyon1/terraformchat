@@ -1,6 +1,4 @@
-variable "access_key" {}
-variable "secret_key" {}
-
-variable "region" {
-  default = "us-east-1"
-}
+variable "pub_key" {}
+variable "do_token" {}
+variable "ssh_fingerprint" {}
+variable "pvt_key" {}

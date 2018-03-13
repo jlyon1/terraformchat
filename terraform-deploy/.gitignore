@@ -2,3 +2,4 @@ terraform.tfvars
 *.tfstate
 *.backup
 .terraform/*
+ip_address.txt
