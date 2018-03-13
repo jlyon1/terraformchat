@@ -1,13 +1,16 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jlyon1/appcache/database"
 	"github.com/jlyon1/terraformchat/api"
 	"github.com/jlyon1/terraformchat/config"
-
+	"math/rand"
 	"net/http"
+	"os"
+	"time"
 )
 
 type Config struct {
@@ -24,7 +27,23 @@ func connectDB(db *database.Redis) {
 
 }
 
+func readLines(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
+}
+
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	cfg, err := config.New()
 	if err != nil {
 		panic(err.Error())
@@ -36,10 +55,25 @@ func main() {
 
 	connectDB(&db)
 
+	animals, err := readLines("./animals.txt")
+	roomName := animals[rand.Intn(len(animals))]
 	r := mux.NewRouter()
+	chatLog := api.ChatLog{
+		roomName,
+		[]string{},
+	}
 	api := api.API{
 		&db,
+		roomName,
+		chatLog,
 	}
+
+	if err != nil {
+		panic(err.Error())
+	}
+
 	r.HandleFunc("/", api.IndexHandler).Methods("GET")
-	http.ListenAndServe("0.0.0.0:8081", r)
+	r.HandleFunc("/name", api.GetRoomName).Methods("GET")
+
+	http.ListenAndServe("0.0.0.0:"+cfg.Port, r)
 }
