@@ -33,6 +33,6 @@ resource "digitalocean_droplet" "chat" {
   }
 
   provisioner "local-exec" {
-    command = "echo ${digitalocean_droplet.chat.price_hourly} > ip_address.txt"
+    command = "echo ${digitalocean_droplet.chat.price_hourly} > price.txt"
   }
 }

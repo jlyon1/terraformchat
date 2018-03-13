@@ -6,6 +6,6 @@ services:
   chat:
     build: ./
     ports:
-      - "8080:80"
+      - "80:80"
     links:
       - redis
