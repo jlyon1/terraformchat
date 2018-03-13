@@ -1,28 +1,22 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
-  </div>
+  <Main></Main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-
+import 'bulma/css/bulma.css'
+import Main from '@/components/Main'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Main
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="sass-loader">
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+$section-padding: 1rem;
+$family-source-sans: "Source Sans Pro", sans-serif;
+$family-primary: $family-source-sans;
+@import '~bulma/bulma';
 </style>
