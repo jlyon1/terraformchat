@@ -8,7 +8,7 @@ resource "digitalocean_droplet" "chat" {
   region             = "nyc3"
   size               = "512mb"
   private_networking = true
-  count = 1
+  count = 5
 
   ssh_keys = [
     "${var.ssh_fingerprint}",
@@ -27,12 +27,9 @@ resource "digitalocean_droplet" "chat" {
       "cd terraformchat",
       "curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
       "chmod +x /usr/local/bin/docker-compose",
-      "nohup docker-compose up &",
+      "docker-compose up -d",
 
     ]
   }
 
-  provisioner "local-exec" {
-    command = "echo ${digitalocean_droplet.chat.price_hourly} > price.txt"
-  }
 }
