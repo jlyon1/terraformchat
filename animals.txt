@@ -313,8 +313,6 @@ Shark
 Sheep
 Shrew
 Shrimp
-Siamese
-Siberian
 Skunk
 Sloth
 Snail

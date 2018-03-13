@@ -71,9 +71,14 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+	go api.Save()
 
 	r.HandleFunc("/", api.IndexHandler).Methods("GET")
 	r.HandleFunc("/name", api.GetRoomName).Methods("GET")
+	r.HandleFunc("/chat", api.GetChatLog).Methods("GET")
+	r.HandleFunc("/send", api.AppendChatLog).Methods("Post")
+
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 
 	http.ListenAndServe("0.0.0.0:"+cfg.Port, r)
 }
