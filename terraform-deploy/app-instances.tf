@@ -2,9 +2,9 @@ provider "digitalocean" {
   token = "${var.do_token}"
 }
 
-resource "digitalocean_droplet" "www-1" {
+resource "digitalocean_droplet" "chat" {
   image              = "docker"
-  name               = "www-1"
+  name               = "chat"
   region             = "nyc3"
   size               = "512mb"
   private_networking = true
@@ -27,12 +27,12 @@ resource "digitalocean_droplet" "www-1" {
       "cd terraformchat",
       "curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose",
       "chmod +x /usr/local/bin/docker-compose",
-      "docker-compose up &",
+      "nohup docker-compose up &",
 
     ]
   }
 
   provisioner "local-exec" {
-    command = "echo ${digitalocean_droplet.www-1.ipv4_address} > ip_address.txt"
+    command = "echo ${digitalocean_droplet.chat.price_hourly} > ip_address.txt"
   }
 }
