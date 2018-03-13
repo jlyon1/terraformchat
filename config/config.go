@@ -39,6 +39,6 @@ func New() (*Config, error) {
 	if err := v.Unmarshal(&cfg); err != nil {
 		return nil, err
 	}
-
+  fmt.Printf("Cfg: %v",cfg)
 	return cfg, nil
 }

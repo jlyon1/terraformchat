@@ -22,6 +22,7 @@ var db database.Redis
 func connectDB(db *database.Redis) {
 	for db.Connect() == false {
 		fmt.Printf("Trying to connect\n")
+    <- time.After(5*time.Second)
 	}
 	fmt.Printf("Connected\n")
 
