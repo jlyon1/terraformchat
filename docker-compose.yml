@@ -1,8 +1,5 @@
 version: '2'
 services:
-  redis:
-    image: redis:latest
-
   chat:
     build: ./
     ports:

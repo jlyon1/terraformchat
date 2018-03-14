@@ -10,7 +10,6 @@ RUN apk add --no-cache \
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
-ENV CFG_REDIS "redis"
 ENV CFG_REDISPORT "6379"
 ENV CFG_PORT "80"
 
