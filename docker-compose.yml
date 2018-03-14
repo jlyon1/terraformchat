@@ -2,5 +2,8 @@ version: '2'
 services:
   chat:
     build: ./
+    environment:
+      - CFG_REDIS=${RP}
+
     ports:
       - "80:80"
